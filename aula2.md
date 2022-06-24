@@ -13,3 +13,25 @@
 
 
 
+Exemplo de erro semântico: 
+`
+if (x=5){
+    ...
+}
+`
+
+### Exemplo da parte da análise do programa fonte
+
+`celsius = 1.8 * fahrenheit + 32` -> Analisador léxico -> `id1 = 1.8 * id2 + 32` -> análise sintática -> árvore sintática
+
+<!-- @TODO: inserir imagens -->
+
+### Geração de código intermédiário
+
+A utilização do código intermediário visa aumentar o reaproveitamento do compilador para outras linguagens. 
+
+> 
+
+
+
+
