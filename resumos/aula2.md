@@ -186,20 +186,47 @@ Associativa à direita seria: var ? termo
 
 *expr* -> *expr* ! *termo* | *termo*
 
-![Imagem](imgs/2022-06-29-15-28-30.png)
+## Notação pósfixa
 
-3 -> Não é necessário parênteses na forma pós fixada.
+> Definição
+>
+> 1. Se E for uma variável ou uma constante, então a notação pósfixa para E é o próprio E.
+> 2. Se E é uma expressão da forma $E_1\ op\ E_2 $, onde $op$ é um operador binário, então a forma pósfixa para E é $E_1'E_2'\ op$, onde $E_1'$ e $E_2'$ são as notações pósfixas de $E_1$ e $E_2$ respectivamente.
+> 3. Se E é uma expressão da forma $\left (E_1\right )$, então a notação pósfixa para $E_1$ será a notação pósfixa para E.
 
 ## Definições dirigidas pela sintaxe
 
-- Usa gramática livre de contexto para especificar estrutura sintática da entrada.
+- Usa gramática livre de contexto para especificar a estrutura sintática da entrada.
 - Associa a cada símbolo da gramática, um conjunto de atributos, e, a cada produção, um conjunto de regras semânticas para computar os valores dos atributos associados aos símbolos presentes na produção.
-<!-- @TODO: completar -->
+- A gramática e o conjunto de regras semânticas constituem a **definição dirigida pela sintaxe**.
+- Um atributo é dito sintetizado se seu valor depende apenas dos valores dos atributos dos nós filhos de seu nó na árvore gramatical. Estes podem ser computados por meio de uma travessia por profundidade (bottom-up).
+
+Exemplo de definição dirigida pela sintaxe para a tradução de notação infixa para pósfixa:
+![Imagem.](imgs/19-45-35.png)
 
 ## Esquema de tradução
 
-<!-- @TODO: -->
+- Um esquema de tradução é uma gramática livre de contexto na qual fragmentos de programas, denominados **ações semânticas**, são inseridos nos lados direitos das produções.
+- Em um esquema de tradução a ordem de avaliação das ações semânticas é explicitamente mostrada.
+- A posição na qual uma ação semântica deve ser executada é marcada no lado direito da produção, por meio de chaves.
+- Na árvore gramatical uma ação semântica é indicada por um filho extra, conectado por meio de uma linha pontilhada.
+- Nós rotulados por ações gramaticais não possuem filhos.
+
+Exemplo de ações semânticas para a tradução de notação infixa para pósfixa
+![Imagem.](imgs/20-13-54.png)
+
+Exemplo de árvore gramatical com ações semânticas para traduzir a expressão `1-2+3`
+![Imagem.](imgs/20-14-47.png)
 
 ## Análise gramatical
 
-<!-- @TODO: -->
+- É o processo de se determinar se uma cadeia de tokens pode ser gerada por uma gramática.
+- O compilador deve ser capaz de construir uma árvore gramatical, mesmo que de forma implícita.
+- Um analisador gramatical pode ser construído para qualquer gramática.
+- Para qualquer gramática livre de contexto, existe um analisador gramatical que analiza N tokens com complexidade $O\left (N^3\right )$.
+- Existem analisadores lineares para quase todas as gramáticas livres de contexto que surgem na prática. 
+
+## Análise top-down e bottom-up
+
+- Há duas classes principais de analisadores gramaticais: top-down e bottom-up. 
+- Analisadores top-down 
