@@ -56,5 +56,14 @@ Há quatro ações que configuram tentativas de recuperação de erros léxicos:
 
 ### Pares de buffers
 
+### Ponteiros L e R
+
+- Os tokens podem ser extraídos do par de _buffers_ por meio do uso de dois ponteiros L e R.
+- Uma cadeia de caracteres delimitada por estes dois ponteiros é o lexema atual.
+- Inicialmente, os dois ponteiros apontam para o primeiro caractere do próximo lexema a ser identificado, então o ponteiro R avança até que o padrão de um token seja reconhecido.
+- Daí, o lexema é processado e ambos ponteiros se movem para o primeiro caractere após o lexema.
+
+### Atualização dos _buffers_ e o ponteiro R
 
 
+### Sentinelas
