@@ -23,6 +23,7 @@ Uma das formas de construir um analisador léxico é escrever um diagrama que il
 - Quando um token pode estar associado a dois ou mais lexemas, o analisador léxico deve prover atributos para os tokens para as fases subsequentes, para que ela possa distingui-los.
 
 Exemplos:
+
 - Em tokens numéricos, o valor do número representado pelo lexema pode ser o atributo do token.
 - Para identificadores, o próximo lexema pode ser o atributo do token (`int numero`).
 
@@ -30,7 +31,7 @@ Exemplos:
 
 Determinados erros não podem ser detectados em nível léxico, como por exemplo o erro abaixo.
 
-```c 
+```c
     fi (a==f(x)) {
         ...
     }
@@ -50,7 +51,96 @@ Há quatro ações que configuram tentativas de recuperação de erros léxicos:
 ### Buferização
 
 - O acesso à entrada pode ser o gargalo, em termos de performance, do compilador.
-- A buferização consiste no uso de um ou mais vetores auxiliares (buffers) que permitem a leitura da entrada em blocos, de moto que o analisador léxico leia os caracteres a partir destes buffers, os quais são atualizados e preenchidos à medida do necessário, o que reduz o acesso ao disco.
+- A buferização consiste no uso de um ou mais vetores auxiliares (buffers) que permitem a leitura da entrada em blocos, de modo que o analisador léxico leia os caracteres a partir destes buffers, os quais são atualizados e preenchidos à medida do necessário, o que reduz o acesso ao disco.
+
+Exemplo:
+
+A) Consideraremos que a entrada cabe no buffer.
+Entrada: s = "ABCDE"
+Tamanho do buffer: N = 8
+|||||||||
+|--|--|--|--|--|--|--|--|
+|A|B|C|D|E|\$|||
+|$\uparrow$|||||
+|pos|||||
+
+```c
+int get()
+{
+    if (buffer[pos]==EOF) throw new Exception("Erro");
+    auto c = buffer[pos++];
+    return c;
+}
+void unget()
+{
+    if (!pos) throw new Exception("Posição igual a zero.");
+    --pos;
+
+}
+```
+
+B) Considerando o _buffer_ único quando a entrada é maior que o tamanho do buffer:
+s = "ABCDEFGHIJKLM"
+N = 8
+
+|0|1|2|3|4|5|6|7|8|
+|--|--|--|--|--|--|--|--|--|
+|A|B|C|D|E|F|G|H|
+|||||||||$\uparrow$|
+|||||||||pos|
+
+```c
+int get()
+{
+    if (pos==N)
+    {
+        fread(buffer, N, sizeof(char), stdin);
+        pos = 0;
+    }
+    auto c = buffer[pos++];
+    return c;
+}
+
+int unget()
+{
+    if (!pos) pos=N-1;
+    else --pos;
+
+}
+```
+
+C) _Buffer_ duplo
+s = "ABCDEFGHIJ" |s| = 10 N = 4
+
+|0|1|2|3|4|5|6|7|8|
+|--|--|--|--|--|--|--|--|--|
+|A|B|C|D|E|F|G||
+|||||||||$\uparrow$|
+|||||||||pos|
+
+```c
+
+int get(){
+    if(pos==2*N and last_update==1){
+        fread(buffer, N, sizeof(char), stdin); //atualiza a primeira metade 
+        pos=0;
+        update=0;
+    } else if (pos==N and last_update==0){
+        fread(buffer+N, N, sizeof(char), stdin); //atualiza a segunda metade
+        update=1;
+    }
+    if (pos==2*N) pos=0;
+    return buffer[pos++];
+}
+void unget()
+{
+    if((pos==2*N or pos==N) and update==1)
+        throw Exception(...);
+    if(pos==N and update==0)
+        throw Exception(...);
+    pos = (pos==0 pr pos==2*N) ? 2*N-1 : pos-1;
+}
+```
 
 ### Estratégias para implementação de analisadores léxicos
 
@@ -65,5 +155,44 @@ Há quatro ações que configuram tentativas de recuperação de erros léxicos:
 
 ### Atualização dos _buffers_ e o ponteiro R
 
-
 ### Sentinelas
+
+### Definições
+
+> Um alfabeto, ou classe de caracteres, é um conjunto finito de símbolos.
+
+- Exemplos: ASCII, EBCDIC, alfabeto binário {0,1}, os dígitos decimais, etc.
+
+> Uma cadeia sobre um alfabeto $\Alpha$ é uma sequência finita de elementos de $\Alpha$. Os termos sentença, palavra e string são geralmente usados como sinônimos de cadeia.
+
+- Observe que as cadeias "AB" e "BA" são diferentes.
+
+#### Conceitos associados à cadeias
+
+- O comprimento de uma cadeia s é denotado por |s|;
+
+- $ |\epsilon|=0$;
+
+- Um prefixo de _s_ é uma cadeia obtida pela remoção de zero ou mais caracteres do fim de _s_;
+
+- Um sufixo de _s_ é uma cadeia obtida pela remoção de zero ou mais caracteres do início de _s_;
+
+- Uma subcadeia de _s_ é uma cadeia obtida pela remoção de um prefixo e de um sufixo de _s_;
+
+- Um prefixo, sufixo ou subcadeia de _s_ é dito próprio se difere de $\epsilon$ e de _s_;
+
+- Uma subsequência de _s_ é uma cadeia obtida pela remoção de zero ou mais símbolos de s, não necessariamente contíguos.
+
+> Uma linguagem é um conjunto de cadeias sobre algum alfabeto $\Alpha$ fixo.
+
+- Observe que linguagens como $\emptyset$ e $ \left\{ \epsilon \right\}$ são contempladas por essa definição.
+
+#### Operações em cadeias
+
+- Concatenação (justaposição);
+
+#### Operações em linguagens
+
+#### Expressões regulares
+
+#### Expressões regulares e parênteses
