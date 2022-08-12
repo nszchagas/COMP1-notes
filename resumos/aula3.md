@@ -196,3 +196,17 @@ void unget()
 #### Expressões regulares
 
 #### Expressões regulares e parênteses
+
+#### Propriedades das expressões regulares
+
+#### Definições regulares
+
+Exemplo: identificadores em C/C++
+
+$ id \leftarrow ( letra | \_ )|| (letra|digito|\_)*$
+
+Classe de caracteres de um número na forma hexadecimal:
+
+1. $hex \leftarrow [0-9A-Fa-f]^+$: constantes hexadecimais não pré-fixadas com 0x.
+
+2. $hex \leftarrow (0(x|X))?[0-9A-Fa-f]^+$: constantes hexadecimais pré-fixadas ou não com 0x.
