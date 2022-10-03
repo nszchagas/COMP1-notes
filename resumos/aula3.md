@@ -1,4 +1,10 @@
-# Aula 3 - Análise Léxica
+---
+title: "Aula 3 - Análise Léxica"
+author: "Nicolas Chagas Souza"
+date: 16/08/2022
+geometry: left=2cm,right=2cm,top=1cm,bottom=2cm
+output: pdf_document
+---
 
 ## Analisador léxico
 
@@ -58,10 +64,11 @@ Exemplo:
 A) Consideraremos que a entrada cabe no buffer.
 Entrada: s = "ABCDE"
 Tamanho do buffer: N = 8
+
 |||||||||
 |--|--|--|--|--|--|--|--|
-|A|B|C|D|E|\$|||
-|$\uparrow$|||||
+|A|B|C|D|E|\$ |||
+| $\uparrow$ |||||
 |pos|||||
 
 ```c
@@ -86,7 +93,7 @@ N = 8
 |0|1|2|3|4|5|6|7|8|
 |--|--|--|--|--|--|--|--|--|
 |A|B|C|D|E|F|G|H|
-|||||||||$\uparrow$|
+||||||||| $\uparrow$ |
 |||||||||pos|
 
 ```c
@@ -115,7 +122,7 @@ s = "ABCDEFGHIJ" |s| = 10 N = 4
 |0|1|2|3|4|5|6|7|8|
 |--|--|--|--|--|--|--|--|--|
 |A|B|C|D|E|F|G||
-|||||||||$\uparrow$|
+||||||||| $\uparrow$ |
 |||||||||pos|
 
 ```c
@@ -163,7 +170,7 @@ void unget()
 
 - Exemplos: ASCII, EBCDIC, alfabeto binário {0,1}, os dígitos decimais, etc.
 
-> Uma cadeia sobre um alfabeto $\Alpha$ é uma sequência finita de elementos de $\Alpha$. Os termos sentença, palavra e string são geralmente usados como sinônimos de cadeia.
+- Uma cadeia sobre um alfabeto  $  \Alpha  $  é uma sequência finita de elementos de  $  \Alpha  $ . Os termos sentença, palavra e string são geralmente usados como sinônimos de cadeia.
 
 - Observe que as cadeias "AB" e "BA" são diferentes.
 
@@ -171,7 +178,7 @@ void unget()
 
 - O comprimento de uma cadeia s é denotado por |s|;
 
-- $ |\epsilon|=0$;
+- $ |\epsilon|=0 $ ;
 
 - Um prefixo de _s_ é uma cadeia obtida pela remoção de zero ou mais caracteres do fim de _s_;
 
@@ -179,13 +186,13 @@ void unget()
 
 - Uma subcadeia de _s_ é uma cadeia obtida pela remoção de um prefixo e de um sufixo de _s_;
 
-- Um prefixo, sufixo ou subcadeia de _s_ é dito próprio se difere de $\epsilon$ e de _s_;
+- Um prefixo, sufixo ou subcadeia de _s_ é dito próprio se difere de  $ \epsilon $  e de _s_;
 
 - Uma subsequência de _s_ é uma cadeia obtida pela remoção de zero ou mais símbolos de s, não necessariamente contíguos.
 
-> Uma linguagem é um conjunto de cadeias sobre algum alfabeto $\Alpha$ fixo.
+- Uma linguagem é um conjunto de cadeias sobre algum alfabeto  $\alpha$  fixo.
 
-- Observe que linguagens como $\emptyset$ e $ \left\{ \epsilon \right\}$ são contempladas por essa definição.
+- Observe que linguagens como  $ \emptyset $  e  $ \left\{ \epsilon \right\} $  são contempladas por essa definição.
 
 #### Operações em cadeias
 
@@ -203,10 +210,10 @@ void unget()
 
 Exemplo: identificadores em C/C++
 
-$ id \leftarrow ( letra | \_ )|| (letra|digito|\_)*$
+ $  id \leftarrow ( letra | \_ )|| (letra|digito|\_)* $
 
 Classe de caracteres de um número na forma hexadecimal:
 
-1. $hex \leftarrow [0-9A-Fa-f]^+$: constantes hexadecimais não pré-fixadas com 0x.
+1. $ hex \leftarrow [0-9A-Fa-f]^+ $ : constantes hexadecimais não pré-fixadas com 0x.
 
-2. $hex \leftarrow (0(x|X))?[0-9A-Fa-f]^+$: constantes hexadecimais pré-fixadas ou não com 0x.
+2. $ hex \leftarrow (0(x|X))?[0-9A-Fa-f]^+ $ : constantes hexadecimais pré-fixadas ou não com 0x.
